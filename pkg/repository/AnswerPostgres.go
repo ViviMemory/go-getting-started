@@ -38,7 +38,7 @@ func (r *AnswerPostgres) Create(text string) (int, error) {
 func (r *AnswerPostgres) createTable() error {
 	createAnswerTable := "CREATE TABLE IF NOT EXISTS answer (" +
 		"id serial not null  unique, " +
-		"text varchar(255) not null"
+		"text varchar(255) not null)"
 
 	if _, err := r.db.Exec(createAnswerTable); err != nil {
 		return err
