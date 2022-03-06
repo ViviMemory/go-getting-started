@@ -129,7 +129,7 @@ func main() {
 		repeat = 5
 	}
 
-	db, err := sqlx.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatalf("Error opening database: %q", err)
 	}
@@ -142,9 +142,11 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		repos := repository.NewRepository(db)
 		service := service2.NewService(repos)
-		id, _ := service.Answer.CreateAnswer("тесирование 1")
+		id, err := service.Answer.CreateAnswer("тесирование 1")
 		c.JSON(http.StatusOK, map[string]interface{}{
-			"id": id,
+			"id":    id,
+			"error": err,
+			"db":    db,
 		})
 	})
 
