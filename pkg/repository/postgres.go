@@ -1,6 +1,9 @@
 package repository
 
 const (
-	userTable   = "user"
-	AnswerTable = "answer"
+	userTable      = "users"
+	companyTable   = "company"
+	groupTable     = "groups"
+	userGroupTable = "user_groups"
+	AnswerTable    = "answer"
 )

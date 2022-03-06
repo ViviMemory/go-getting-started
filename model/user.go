@@ -5,3 +5,13 @@ type User struct {
 	Name  string `json:"name" binding:"required"`
 	Phone string `json:"phone" binding:"required"`
 }
+
+type SignUpInput struct {
+	Phone string `json:"phone" binding:"required"`
+	Name  string `json:"name" binding:"required"`
+}
+
+type SignInInput struct {
+	Phone string `json:"phone" binding:"required"`
+	Name  string `json:"name" binding:"required"`
+}
