@@ -27,7 +27,7 @@ func repeatHandler(r int) gin.HandlerFunc {
 
 func dbFunc(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if _, err := db.Exec("CREATE TABLE IF NOT EXISTS users (id serial not null unique, name varchar(255) not null, username varchar(255) not null unique, password_hash varchar(255) not null)"); err != nil {
+		if _, err := db.Exec("drop table users"); err != nil {
 			c.String(http.StatusInternalServerError,
 				fmt.Sprintf("Error creating database table: %q", err))
 			return
