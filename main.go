@@ -25,5 +25,11 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 
+	router.GET("/hello", func(context *gin.Context) {
+		context.JSON(http.StatusOK, map[string]interface{}{
+			"id": "hello",
+		})
+	})
+
 	router.Run(":" + port)
 }
