@@ -1,5 +1,7 @@
 package repository
 
+import "github.com/jmoiron/sqlx"
+
 type Answer interface {
 	Create(text string) (int, error)
 }
