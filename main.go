@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/heroku/go-getting-started/pkg/repository"
 	service2 "github.com/heroku/go-getting-started/pkg/service"
+	"github.com/jmoiron/sqlx"
 	"log"
 	"math/rand"
 	"net/http"
@@ -31,7 +32,7 @@ func repeatHandler(r int) gin.HandlerFunc {
 	}
 }
 
-func dbFunc(db *sql.DB) gin.HandlerFunc {
+func dbFunc(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		// Set account keys & information
