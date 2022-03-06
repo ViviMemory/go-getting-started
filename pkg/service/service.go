@@ -6,12 +6,18 @@ type Answer interface {
 	CreateAnswer(text string) (int, error)
 }
 
+type Authentication interface {
+	CheckAuth(phone string) (int, error)
+}
+
 type Service struct {
 	Answer
+	Authentication
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Answer: NewAnswerService(repos),
+		Answer:         NewAnswerService(repos),
+		Authentication: NewAuthService(repos),
 	}
 }
