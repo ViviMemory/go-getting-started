@@ -20,8 +20,8 @@ func (r *AnswerPostgres) Create(text string) (int, error) {
 		return 0, err
 	}
 
-	if err := r.createTable(); r != nil {
-		log.Fatalf("it is not possible to create a table of answer options")
+	if err := r.createTable(); err != nil {
+		log.Printf("it is not possible to create a table of answer options")
 		return 0, err
 	}
 
