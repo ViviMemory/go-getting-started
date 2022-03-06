@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/heroku/go-getting-started/pkg/repository"
+	service2 "github.com/heroku/go-getting-started/pkg/service"
 	"log"
 	"math/rand"
 	"net/http"
@@ -145,7 +147,12 @@ func main() {
 	router.Static("/static", "static")
 
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+		repos := repository.NewRepository(db)
+		service := service2.NewService(repos)
+		id, _ := service.Answer.CreateAnswer("тесирование 1")
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"id": id,
+		})
 	})
 
 	router.GET("/repeat", repeatHandler(repeat))
