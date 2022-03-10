@@ -21,9 +21,9 @@ func (h *Handler) authCheck(c *gin.Context) {
 
 	id, _ := h.services.Authentication.CheckAuth(input.Phone)
 
-	if id != 0 {
-		sendSms(input.Phone)
-	}
+	//if id != 0 {
+	//	sendSms(input.Phone)
+	//}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
