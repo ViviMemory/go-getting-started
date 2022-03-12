@@ -9,6 +9,7 @@ require (
 	github.com/heroku/x v0.0.33
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.4
+	github.com/maxchagin/go-memorycache-example v0.0.0-20180524131321-f4bebbb0aa08
 )
 
 require (

@@ -3,14 +3,20 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/heroku/go-getting-started/pkg/service"
+	memorycache "github.com/maxchagin/go-memorycache-example"
+	"time"
 )
 
 type Handler struct {
 	services *service.Service
+	cache    *memorycache.Cache
 }
 
 func NewHandler(services *service.Service) *Handler {
-	return &Handler{services: services}
+	return &Handler{
+		services: services,
+		cache:    memorycache.New(36600*time.Hour, 36600*time.Hour),
+	}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -18,7 +24,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/check", h.authCheck)
+		sms := auth.Group("/sms")
+		{
+			sms.POST("/send", h.sendSms)
+			sms.POST("/check", h.checkSms)
+		}
+
 		auth.POST("/signup", h.signUp)
 		auth.POST("/signin", h.signIn)
 	}
