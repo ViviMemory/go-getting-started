@@ -30,6 +30,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			sms.POST("/check", h.checkSms)
 		}
 
+		auth.POST("/check", h.authCheck)
 		auth.POST("/signup", h.signUp)
 		auth.POST("/signin", h.signIn)
 	}
