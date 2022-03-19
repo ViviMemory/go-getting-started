@@ -9,6 +9,11 @@ type Answer interface {
 	CreateAnswer(text string) (int, error)
 }
 
+type User interface {
+	Info(id int) (model.UserFull, error)
+	SetRole(id int, role int) (int, error)
+}
+
 type Authentication interface {
 	CheckAuth(phone string) (int, error)
 	CreateUser(user model.SignUpInput) (int, error)
@@ -31,6 +36,7 @@ type Service struct {
 	Authentication
 	Company
 	Group
+	User
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -39,5 +45,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authentication: NewAuthService(repos),
 		Company:        NewCompanyService(repos),
 		Group:          NewGroupService(repos),
+		User:           NewUserService(repos),
 	}
 }

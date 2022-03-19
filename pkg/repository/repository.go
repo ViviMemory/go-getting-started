@@ -9,6 +9,11 @@ type Answer interface {
 	Create(text string) (int, error)
 }
 
+type User interface {
+	Info(id int) (model.UserFull, error)
+	SetRole(id int, role int) (int, error)
+}
+
 type Authentication interface {
 	CheckAuth(phone string) (int, error)
 	CreateUser(user model.SignUpInput) (int, error)
@@ -31,6 +36,7 @@ type Repository struct {
 	Authentication
 	Company
 	Group
+	User
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -39,5 +45,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authentication: NewAuthPostgres(db),
 		Company:        NewCompanyPostgres(db),
 		Group:          NewGroupPostgres(db),
+		User:           NewUserPostgres(db),
 	}
 }

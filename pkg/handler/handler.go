@@ -24,15 +24,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		sms := auth.Group("/sms")
-		{
-			sms.POST("/send", h.sendSms)
-			sms.POST("/check", h.checkSms)
-		}
-
 		auth.POST("/check", h.authCheck)
 		auth.POST("/signup", h.signUp)
 		auth.POST("/signin", h.signIn)
+	}
+
+	main := router.Group("/main", h.userIdentity)
+	{
+		main.GET("/info", h.info)
+		main.GET("/setrole", h.setRoleAdmin)
 	}
 
 	router.POST("/company", h.getCompany)
