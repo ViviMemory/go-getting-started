@@ -23,7 +23,7 @@ type UserFull struct {
 }
 
 type GroupCompanyInInfo struct {
-	Id    string `json:"id" db:"id"`
+	Id    int    `json:"id" db:"id"`
 	Title string `json:"title" db:"title"`
 }
 
