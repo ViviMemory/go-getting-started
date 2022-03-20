@@ -57,3 +57,16 @@ func (r *CompanyPostgres) createCompanyTable() error {
 	}
 	return nil
 }
+
+func (r *CompanyPostgres) createCompanyUserTable() error {
+	createCompanyTable := "CREATE TABLE IF NOT EXISTS company_user (" +
+		"id serial not null unique," +
+		"company_id varchar(255) not null," +
+		"user_id varchar(255) not null" +
+		")"
+
+	if _, err := r.db.Exec(createCompanyTable); err != nil {
+		return err
+	}
+	return nil
+}

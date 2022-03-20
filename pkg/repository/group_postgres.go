@@ -15,6 +15,65 @@ func NewGroupPostgres(db *sqlx.DB) *GroupPostgres {
 	return &GroupPostgres{db: db}
 }
 
+func (r *GroupPostgres) DetailGroup(groupId int) ([]model.UserGroup, error) {
+	var users = []model.UserGroup{}
+	query := fmt.Sprintf("SELECT users.id, users.username, users.phone FROM users INNER JOIN group_user ON group_user.user_id=users.id and group_user.group_company_id=$1")
+	err := r.db.Select(&users, query, groupId)
+
+	if err != nil {
+		fmt.Println(err)
+		return users, err
+	}
+	return users, nil
+}
+
+func (r *GroupPostgres) InviteUserInGroup(groupId int, phone string) (int, error) {
+	var userId int
+	query := fmt.Sprintf("select id from %s where phone=$1", userTable)
+	err := r.db.Get(&userId, query, phone)
+
+	if err != nil {
+		fmt.Println(err)
+		return userId, err
+	}
+
+	query = fmt.Sprintf("INSERT INTO group_user (group_company_id, user_id, status) values ($1, $2, 1) RETURNING id")
+
+	var idInsert int
+
+	row := r.db.QueryRow(query, groupId, userId)
+	if err := row.Scan(&idInsert); err != nil {
+		return 0, err
+	}
+
+	return idInsert, nil
+}
+
+func (r *GroupPostgres) ListInviteUserInGroup(userId int) ([]model.GroupList, error) {
+	var groups = []model.GroupList{}
+	query := fmt.Sprintf("select group_company.id, group_company.title from group_company inner join group_user on group_user.group_company_id=group_company.id and group_user.status=1 and group_user.user_id=$1")
+	err := r.db.Select(&groups, query, userId)
+
+	if err != nil {
+		fmt.Println(err)
+		return groups, err
+	}
+
+	return groups, nil
+}
+
+func (r *GroupPostgres) ActiveInviteUserInGroup(userId int, groupId int, isReject bool) error {
+	query := fmt.Sprintf("update group_user set status=$1 where user_id=$2 and group_company_id=$3")
+	var act int
+	if isReject {
+		act = 2
+	} else {
+		act = 3
+	}
+	_, err := r.db.Exec(query, act, userId, groupId)
+	return err
+}
+
 func (r *GroupPostgres) CreateGroup(title string, userId int) (int, error) {
 	if err := r.createGroupTable(); err != nil {
 		return 0, err

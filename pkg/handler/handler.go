@@ -33,6 +33,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		main.GET("/info", h.info)
 		main.GET("/setrole", h.setRoleAdmin)
+		main.POST("/group/detail", h.detailGroup)
+		main.POST("/group/invite", h.inviteUserInGroup)
+		main.GET("/group/list", h.listInviteUser)
+		main.POST("/group/active", h.activeInviteUser)
+		main.GET("/test/categories/list", h.testCategoriesList)
+		main.POST("/test/categories/created", h.testCategoriesAdd)
+		main.POST("/test/created", h.CreatedTest)
+		main.GET("/test/all", h.AllTests)
 	}
 
 	router.POST("/company", h.getCompany)

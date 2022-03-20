@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,8 +13,6 @@ func (h *Handler) info(c *gin.Context) {
 	}
 
 	user, _ := h.services.User.Info(userId)
-
-	fmt.Println(userId)
 
 	c.JSON(http.StatusOK, user)
 }
