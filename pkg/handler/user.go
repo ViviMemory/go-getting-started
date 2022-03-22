@@ -2,8 +2,14 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/heroku/go-getting-started/model"
 	"net/http"
 )
+
+type UserWithTestOutput struct {
+	Tests model.TestOutput `json:"tests"`
+	User  model.UserFull   `json:"user"`
+}
 
 func (h *Handler) info(c *gin.Context) {
 	userId, err := getUserId(c)
@@ -14,7 +20,18 @@ func (h *Handler) info(c *gin.Context) {
 
 	user, _ := h.services.User.Info(userId)
 
-	c.JSON(http.StatusOK, user)
+	tests, err := h.services.Test.AllTest(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var response = UserWithTestOutput{
+		Tests: tests,
+		User:  user,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *Handler) setRoleAdmin(c *gin.Context) {
