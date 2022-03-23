@@ -3,8 +3,41 @@ package model
 type TestInput struct {
 	Title         string `json:"title" db:"title"`
 	AccessPrivate bool   `json:"access_private"`
-	CategoryId    int    `json:"category_id"`
-	GroupId       int    `json:"group_id"`
+	//CategoryId    int    `json:"category_id"`
+	GroupId   int              `json:"group_id"`
+	Questions []QuestionsInput `json:"questions"`
+}
+
+type TestDetailOutput struct {
+	Title     string            `json:"title" db:"title"`
+	Questions []QuestionsOutput `json:"questions"`
+}
+
+type QuestionsInput struct {
+	Title   string        `json:"title"`
+	Answers []AnswerInput `json:"answers"`
+}
+
+type QuestionsTimeOutput struct {
+	Id    int    `json:"id"`
+	Title string `json:"title"`
+}
+
+type QuestionsOutput struct {
+	Id      int            `json:"id"`
+	Title   string         `json:"title"`
+	Answers []AnswerOutput `json:"answers"`
+}
+
+type AnswerInput struct {
+	Title   string `json:"title"`
+	IsRight bool   `json:"is_right"`
+}
+
+type AnswerOutput struct {
+	Id      int    `json:"id"`
+	Title   string `json:"title"`
+	IsRight bool   `json:"is_right" db:"is_right"`
 }
 
 type TestOutput struct {

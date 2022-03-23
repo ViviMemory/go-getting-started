@@ -44,6 +44,12 @@ type Test interface {
 	CreatedTest(title string, categoryId int, accessPrivate bool, userId int) (int, error)
 	AddPrivateTestInGroup(testId int, groupId int) (int, error)
 	AllTest(userId int) (model.TestOutput, error)
+	DetailTest(testId int) (model.TestDetailOutput, error)
+}
+
+type Question interface {
+	AddQuestionInTest(title string, testId int) (int, error)
+	AddAnswerInQuestion(testId int, title string, isRight bool) error
 }
 
 type Service struct {
@@ -54,6 +60,7 @@ type Service struct {
 	User
 	TestCategory
 	Test
+	Question
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -65,5 +72,6 @@ func NewService(repos *repository.Repository) *Service {
 		User:           NewUserService(repos),
 		TestCategory:   NewTestCategoryService(repos),
 		Test:           NewTestService(repos),
+		Question:       NewQuestionService(repos),
 	}
 }

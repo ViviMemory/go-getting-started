@@ -9,6 +9,10 @@ type TestService struct {
 	repo repository.Test
 }
 
+func (s *TestService) DetailTest(testId int) (model.TestDetailOutput, error) {
+	return s.repo.DetailTest(testId)
+}
+
 func NewTestService(repo repository.Test) *TestService {
 	return &TestService{repo: repo}
 }

@@ -40,6 +40,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		main.GET("/test/categories/list", h.testCategoriesList)
 		main.POST("/test/categories/created", h.testCategoriesAdd)
 		main.POST("/test/created", h.CreatedTest)
+		main.POST("/test/detail", h.DetailTest)
 		main.GET("/test/all", h.AllTests)
 	}
 

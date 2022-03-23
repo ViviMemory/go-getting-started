@@ -59,3 +59,31 @@ func (r *TestPostgres) AllTest(userId int) (model.TestOutput, error) {
 
 	return result, err
 }
+
+func (r *TestPostgres) DetailTest(testId int) (model.TestDetailOutput, error) {
+	var result = model.TestDetailOutput{}
+	var questionsId []model.QuestionsTimeOutput
+	// get all questions
+	query := fmt.Sprintf("select distinct test_question.id, test_question.title from test_question where test_question.tests_id=$1")
+	err := r.db.Select(&questionsId, query, testId)
+	if err != nil {
+		return result, err
+	}
+
+	// get all answers for all question
+	for _, item := range questionsId {
+		var answers []model.AnswerOutput
+		query = fmt.Sprintf("select distinct question_answers.id, question_answers.title, question_answers.is_right from question_answers where question_answers.test_question_id=$1")
+		err := r.db.Select(&answers, query, item.Id)
+		if err != nil {
+			return result, err
+		}
+		result.Questions = append(result.Questions, model.QuestionsOutput{
+			Id:      item.Id,
+			Title:   item.Title,
+			Answers: answers,
+		})
+	}
+
+	return result, nil
+}
