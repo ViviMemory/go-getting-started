@@ -61,6 +61,35 @@ type TestIdInput struct {
 	Id int `json:"test_id"`
 }
 
+type TestResultInput struct {
+	TestId       int `json:"test_id"`
+	PercentRight int `json:"percent_right"`
+}
+
+func (h *Handler) SaveResultTest(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	var input TestResultInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	recordId, err := h.services.Test.SaveResultTest(userId, input.TestId, input.PercentRight)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": recordId,
+	})
+}
+
 func (h *Handler) DetailTest(c *gin.Context) {
 	var input TestIdInput
 	if err := c.BindJSON(&input); err != nil {

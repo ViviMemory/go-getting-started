@@ -17,6 +17,10 @@ func NewTestService(repo repository.Test) *TestService {
 	return &TestService{repo: repo}
 }
 
+func (s *TestService) SaveResultTest(userId int, testId int, percentRight int) (int, error) {
+	return s.repo.SaveResultTest(userId, testId, percentRight)
+}
+
 func (s *TestService) CreatedTest(title string, categoryId int, accessPrivate bool, userId int) (int, error) {
 	return s.repo.CreatedTest(title, categoryId, accessPrivate, userId)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/heroku/go-getting-started/model"
 	"github.com/jmoiron/sqlx"
+	"time"
 )
 
 type TestPostgres struct {
@@ -60,8 +61,23 @@ func (r *TestPostgres) AllTest(userId int) (model.TestOutput, error) {
 	return result, err
 }
 
+func (r *TestPostgres) SaveResultTest(userId int, testId int, percentRight int) (int, error) {
+	var id int
+	currentTime := time.Now()
+	query := fmt.Sprintf("insert into test_history (users_id, tests_id, percent_right, datetime_test) values($1, $2, $3, $4) returning id")
+	row := r.db.QueryRow(query, userId, testId, percentRight, currentTime.String())
+	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+	return id, nil
+}
+
 func (r *TestPostgres) DetailTest(testId int) (model.TestDetailOutput, error) {
 	var result = model.TestDetailOutput{}
+
+	//query := fmt.Sprintf("select title from tests where tests.tests_id=$1")
+	//err := r.db.Select(&questionsId, query, testId)
+
 	var questionsId []model.QuestionsTimeOutput
 	// get all questions
 	query := fmt.Sprintf("select distinct test_question.id, test_question.title from test_question where test_question.tests_id=$1")

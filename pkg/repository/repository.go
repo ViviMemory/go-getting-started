@@ -45,6 +45,7 @@ type Test interface {
 	AddPrivateTestInGroup(testId int, groupId int) (int, error)
 	AllTest(userId int) (model.TestOutput, error)
 	DetailTest(testId int) (model.TestDetailOutput, error)
+	SaveResultTest(userId int, testId int, percentRight int) (int, error)
 }
 
 type Question interface {
