@@ -6,6 +6,14 @@ type TestHistoryItem struct {
 	Datetime     string `json:"datetime"`
 }
 
+type TestHistoryAllItem struct {
+	Title        string `json:"title" db:"title"`
+	PercentRight int    `json:"percent_right" db:"percent_right"`
+	Datetime     string `json:"datetime"`
+	UserPhone    string `json:"user_phone" db:"user_phone"`
+	UserName     string `json:"user_name" db:"user_name"`
+}
+
 type TestInput struct {
 	Title         string `json:"title" db:"title"`
 	AccessPrivate bool   `json:"access_private"`

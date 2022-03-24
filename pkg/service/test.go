@@ -13,7 +13,7 @@ func (s *TestService) HistoryMyTests(userId int) ([]model.TestHistoryItem, error
 	return s.repo.HistoryMyTests(userId)
 }
 
-func (s *TestService) HistoryAllTests() ([]model.TestHistoryItem, error) {
+func (s *TestService) HistoryAllTests() ([]model.TestHistoryAllItem, error) {
 	return s.repo.HistoryAllTests()
 }
 

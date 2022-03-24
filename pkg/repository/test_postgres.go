@@ -82,9 +82,9 @@ func (r *TestPostgres) HistoryMyTests(userId int) ([]model.TestHistoryItem, erro
 	return tests, nil
 }
 
-func (r *TestPostgres) HistoryAllTests() ([]model.TestHistoryItem, error) {
-	var tests []model.TestHistoryItem
-	query := fmt.Sprintf(" SELECT DISTINCT tests.title as title,test_history.datetime_test as datetime, test_history.percent_right as percent_right FROM test_history INNER JOIN tests ON tests.id=test_history.tests_id")
+func (r *TestPostgres) HistoryAllTests() ([]model.TestHistoryAllItem, error) {
+	var tests []model.TestHistoryAllItem
+	query := fmt.Sprintf("SELECT DISTINCT tests.title as title,test_history.datetime_test as datetime, test_history.percent_right as percent_right, users.phone as user_phone, users.username as user_name FROM test_history INNER JOIN tests ON tests.id=test_history.tests_id  inner join users on test_history.users_id=users.id")
 	err := r.db.Select(&tests, query)
 	if err != nil {
 		return tests, err
