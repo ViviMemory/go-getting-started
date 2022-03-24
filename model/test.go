@@ -1,5 +1,10 @@
 package model
 
+type TestHistoryItem struct {
+	Title        string `json:"title" db:"title"`
+	PercentRight int    `json:"percent_right" db:"percent_right"`
+}
+
 type TestInput struct {
 	Title         string `json:"title" db:"title"`
 	AccessPrivate bool   `json:"access_private"`

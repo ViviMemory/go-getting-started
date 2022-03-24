@@ -65,12 +65,14 @@ func (r *TestPostgres) SaveResultTest(userId int, testId int, percentRight int) 
 	var id int
 	currentTime := time.Now()
 	query := fmt.Sprintf("insert into test_history (users_id, tests_id, percent_right, datetime_test) values($1, $2, $3, $4) returning id")
-	row := r.db.QueryRow(query, userId, testId, percentRight, currentTime.String())
+	row := r.db.QueryRow(query, userId, testId, percentRight, currentTime.Format("2006.01.02 15:04:05"))
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
 	return id, nil
 }
+
+//func (r *TestPostgres) HistoryMyTests(userId int)
 
 func (r *TestPostgres) DetailTest(testId int) (model.TestDetailOutput, error) {
 	var result = model.TestDetailOutput{}
