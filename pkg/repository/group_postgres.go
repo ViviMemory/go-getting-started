@@ -80,10 +80,20 @@ func (r *GroupPostgres) CreateGroup(title string, userId int) (int, error) {
 	}
 
 	var id int
-	query := fmt.Sprintf("INSERT INTO %s (title, main_user_id) values ($1, $2) RETURNING id", groupTable)
+	query := fmt.Sprintf("insert into group_company (title, company_id) values ($1, 1) returning id")
+	//query := fmt.Sprintf("INSERT INTO %s (title, main_user_id) values ($1, $2) RETURNING id", groupTable)
 
-	row := r.db.QueryRow(query, title, userId)
+	row := r.db.QueryRow(query, title)
 	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+
+	var idQuery int
+	query = fmt.Sprintf("insert into group_user (group_company_id, user_id, status) values ($1, $2, $3) returning id")
+	//query := fmt.Sprintf("INSERT INTO %s (title, main_user_id) values ($1, $2) RETURNING id", groupTable)
+
+	row = r.db.QueryRow(query, id, userId, 4)
+	if err := row.Scan(&idQuery); err != nil {
 		return 0, err
 	}
 	return id, nil
