@@ -3,6 +3,7 @@ package model
 type TestHistoryItem struct {
 	Title        string `json:"title" db:"title"`
 	PercentRight int    `json:"percent_right" db:"percent_right"`
+	Datetime     string `json:"datetime"`
 }
 
 type TestInput struct {

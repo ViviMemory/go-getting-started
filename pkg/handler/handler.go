@@ -43,6 +43,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		main.POST("/test/detail", h.DetailTest)
 		main.POST("/test/save", h.SaveResultTest)
 		main.GET("/test/all", h.AllTests)
+
+		main.GET("/test/history/all", h.AllTest)
+		main.GET("/test/history/my", h.MyTest)
 	}
 
 	router.POST("/company", h.getCompany)

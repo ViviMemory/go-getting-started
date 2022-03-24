@@ -90,6 +90,34 @@ func (h *Handler) SaveResultTest(c *gin.Context) {
 	})
 }
 
+func (h *Handler) MyTest(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	result, err := h.services.Test.HistoryMyTests(userId)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *Handler) AllTest(c *gin.Context) {
+
+	result, err := h.services.Test.HistoryAllTests()
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+}
+
 func (h *Handler) DetailTest(c *gin.Context) {
 	var input TestIdInput
 	if err := c.BindJSON(&input); err != nil {

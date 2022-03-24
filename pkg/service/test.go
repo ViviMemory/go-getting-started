@@ -9,6 +9,14 @@ type TestService struct {
 	repo repository.Test
 }
 
+func (s *TestService) HistoryMyTests(userId int) ([]model.TestHistoryItem, error) {
+	return s.repo.HistoryMyTests(userId)
+}
+
+func (s *TestService) HistoryAllTests() ([]model.TestHistoryItem, error) {
+	return s.repo.HistoryAllTests()
+}
+
 func (s *TestService) DetailTest(testId int) (model.TestDetailOutput, error) {
 	return s.repo.DetailTest(testId)
 }

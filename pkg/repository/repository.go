@@ -46,6 +46,8 @@ type Test interface {
 	AllTest(userId int) (model.TestOutput, error)
 	DetailTest(testId int) (model.TestDetailOutput, error)
 	SaveResultTest(userId int, testId int, percentRight int) (int, error)
+	HistoryMyTests(userId int) ([]model.TestHistoryItem, error)
+	HistoryAllTests() ([]model.TestHistoryItem, error)
 }
 
 type Question interface {

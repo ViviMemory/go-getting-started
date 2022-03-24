@@ -72,7 +72,25 @@ func (r *TestPostgres) SaveResultTest(userId int, testId int, percentRight int) 
 	return id, nil
 }
 
-//func (r *TestPostgres) HistoryMyTests(userId int)
+func (r *TestPostgres) HistoryMyTests(userId int) ([]model.TestHistoryItem, error) {
+	var tests []model.TestHistoryItem
+	query := fmt.Sprintf(" SELECT DISTINCT tests.title as title,test_history.datetime_test as datetime, test_history.percent_right as percent_right FROM test_history INNER JOIN tests ON tests.id=test_history.tests_id and test_history.users_id=$1")
+	err := r.db.Select(&tests, query, userId)
+	if err != nil {
+		return tests, err
+	}
+	return tests, nil
+}
+
+func (r *TestPostgres) HistoryAllTests() ([]model.TestHistoryItem, error) {
+	var tests []model.TestHistoryItem
+	query := fmt.Sprintf(" SELECT DISTINCT tests.title as title,test_history.datetime_test as datetime, test_history.percent_right as percent_right FROM test_history INNER JOIN tests ON tests.id=test_history.tests_id")
+	err := r.db.Select(&tests, query)
+	if err != nil {
+		return tests, err
+	}
+	return tests, nil
+}
 
 func (r *TestPostgres) DetailTest(testId int) (model.TestDetailOutput, error) {
 	var result = model.TestDetailOutput{}
