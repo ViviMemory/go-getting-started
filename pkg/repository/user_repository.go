@@ -37,7 +37,7 @@ func (r *UserPostgres) Info(id int) (model.UserFull, error) {
 		var groups []model.GroupCompanyInInfo
 		query := fmt.Sprintf("select group_company.id as id, group_company.title as title from group_company inner join group_user on group_user.user_id=$1 and group_user.group_company_id=group_company.id")
 		//query = fmt.Sprintf("SELECT id, title FROM group_company where company_id=$1")
-		err = r.db.Select(&groups, query, user.CompanyId)
+		err = r.db.Select(&groups, query, user.Id)
 
 		if err != nil {
 			fmt.Println(user.CompanyId)
