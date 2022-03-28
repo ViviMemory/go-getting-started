@@ -18,7 +18,7 @@ func NewGroupPostgres(db *sqlx.DB) *GroupPostgres {
 
 func (r *GroupPostgres) DetailGroup(groupId int) ([]model.UserGroup, error) {
 	var users = []model.UserGroup{}
-	query := fmt.Sprintf("SELECT users.id, users.username, users.phone FROM users INNER JOIN group_user ON group_user.user_id=users.id and group_user.group_company_id=$1")
+	query := fmt.Sprintf("SELECT users.id, users.username, users.phone FROM users INNER JOIN group_user ON group_user.user_id=users.id and group_user.group_company_id=$1 and group_user.status=3")
 	err := r.db.Select(&users, query, groupId)
 
 	if err != nil {
