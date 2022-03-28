@@ -21,8 +21,9 @@ type GroupAddUserInput struct {
 }
 
 type GroupList struct {
-	Id    int    `json:"id" db:"id"`
-	Title string `json:"title" db:"title"`
+	Id     int    `json:"id" db:"id"`
+	Title  string `json:"title" db:"title"`
+	Status int    `json:"status"`
 }
 
 type GroupDeleteUserInput struct {

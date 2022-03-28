@@ -5,6 +5,7 @@ import (
 	"github.com/heroku/go-getting-started/model"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"reflect"
 )
 
 type GroupPostgres struct {
@@ -27,6 +28,22 @@ func (r *GroupPostgres) DetailGroup(groupId int) ([]model.UserGroup, error) {
 	return users, nil
 }
 
+func itemExists(arrayType interface{}, item interface{}) bool {
+	arr := reflect.ValueOf(arrayType)
+
+	if arr.Kind() != reflect.Array {
+		panic("Invalid data-type")
+	}
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.Index(i).Interface() == item {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (r *GroupPostgres) InviteUserInGroup(groupId int, phone string) (int, error) {
 	var userId int
 	query := fmt.Sprintf("select id from %s where phone=$1", userTable)
@@ -35,6 +52,19 @@ func (r *GroupPostgres) InviteUserInGroup(groupId int, phone string) (int, error
 	if err != nil {
 		fmt.Println(err)
 		return userId, err
+	}
+
+	var othersIds []int
+	query = fmt.Sprintf("select group_user.group_company_id from group_user where user_id=$1")
+	err = r.db.Select(&othersIds, query, userId)
+
+	if err != nil {
+		fmt.Println(err)
+		return userId, err
+	}
+
+	if itemExists(othersIds, groupId) {
+		return 0, nil
 	}
 
 	query = fmt.Sprintf("INSERT INTO group_user (group_company_id, user_id, status) values ($1, $2, 1) RETURNING id")
@@ -51,7 +81,7 @@ func (r *GroupPostgres) InviteUserInGroup(groupId int, phone string) (int, error
 
 func (r *GroupPostgres) ListInviteUserInGroup(userId int) ([]model.GroupList, error) {
 	var groups = []model.GroupList{}
-	query := fmt.Sprintf("select group_company.id, group_company.title from group_company inner join group_user on group_user.group_company_id=group_company.id and group_user.status=1 and group_user.user_id=$1")
+	query := fmt.Sprintf("select group_company.id, group_company.title, group_user.status from group_company inner join group_user on group_user.group_company_id=group_company.id and not group_user.status=4 and group_user.user_id=$1")
 	err := r.db.Select(&groups, query, userId)
 
 	if err != nil {
